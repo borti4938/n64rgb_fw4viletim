@@ -86,8 +86,6 @@ always @(posedge VCLK)
 
 always @(posedge VCLK) begin // data register management
   if (!nDSYNC) begin
-    if (vdata_r_0[vdata_width-1] & !D_i[3]) // negedge at nVSYNC detected - new frame, new setting for 15bit mode
-
     // shift data to output registers
     if (ndo_deblur)
       vdata_r_1[`VDATA_SY_SLICE] <= vdata_r_0[`VDATA_SY_SLICE];

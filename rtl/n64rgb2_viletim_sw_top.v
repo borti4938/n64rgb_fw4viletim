@@ -89,7 +89,7 @@ output [color_width-1:0] B_o;
 
 reg nForceDeBlur_L, nDeBlurMan_L, nrst_deblur_L;
 
-always @(posedge VCLK) begin
+always @(*) begin
   nForceDeBlur_L <= !nAutoDeBlur & nForceDeBlur;
   nDeBlurMan_L   <= nForceDeBlur;
   nrst_deblur_L  <= !nAutoDeBlur;
