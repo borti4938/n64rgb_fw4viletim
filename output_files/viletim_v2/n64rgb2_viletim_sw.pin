@@ -80,10 +80,10 @@ VCLK                         : 14        : input  : 3.3-V LVTTL       :         
 RESERVED_INPUT_WITH_WEAK_PULLUP : 15        :        :                   :         : 1         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 16        :        :                   :         : 1         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 17        :        :                   :         : 1         :                
-nForceDeBlur                 : 18        : input  : 3.3-V LVTTL       :         : 1         : Y              
+nManualPad                   : 18        : input  : 3.3-V LVTTL       :         : 1         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : 19        :        :                   :         : 1         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 20        :        :                   :         : 1         :                
-nAutoDeBlur                  : 21        : input  : 3.3-V LVTTL       :         : 1         : Y              
+nAutoPad                     : 21        : input  : 3.3-V LVTTL       :         : 1         : Y              
 TMS                          : 22        : input  :                   :         : 1         :                
 TDI                          : 23        : input  :                   :         : 1         :                
 TCK                          : 24        : input  :                   :         : 1         :                
@@ -95,7 +95,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : 29        :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : 30        :        :                   :         : 1         :                
 VCCIO1                       : 31        : power  :                   : 3.3V    : 1         :                
 GNDIO                        : 32        : gnd    :                   :         :           :                
-n15bit_mode                  : 33        : input  : 3.3-V LVTTL       :         : 1         : Y              
+RESERVED_INPUT_WITH_WEAK_PULLUP : 33        :        :                   :         : 1         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 34        :        :                   :         : 1         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 35        :        :                   :         : 1         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 36        :        :                   :         : 1         :                
