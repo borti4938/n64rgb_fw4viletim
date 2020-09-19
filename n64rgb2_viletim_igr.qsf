@@ -115,13 +115,13 @@ set_instance_assignment -name SLOW_SLEW_RATE ON -to nVSYNC
 
 ## Jumper
 ## ======
-set_location_assignment PIN_33 -to Default_n15bit_mode
-set_location_assignment PIN_61 -to Default_nForceDeBlur
-set_location_assignment PIN_78 -to Default_DeBlur
+set_location_assignment PIN_33 -to n15bit_mode_t
+set_location_assignment PIN_61 -to VIDeBlur_t
+set_location_assignment PIN_78 -to en_IGR_FuncS
 
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to Default_n15bit_mode
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to Default_nForceDeBlur
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to Default_DeBlur
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to n15bit_mode_t
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to VIDeBlur_t
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to en_IGR_FuncS
 
 
 ## I/O Standard
@@ -137,13 +137,17 @@ set_instance_assignment -name IO_STANDARD "2.5 V" -to B_o
 ## Files
 ## =====
 set_global_assignment -name TOP_LEVEL_ENTITY n64rgb2_viletim_igr_top
-set_global_assignment -name VERILOG_FILE rtl/n64rgb2_viletim_igr_top.v
+
 set_global_assignment -name VERILOG_INCLUDE_FILE vh/n64rgb_params.vh
-set_global_assignment -name VERILOG_FILE rtl/n64_igr.v
+
+set_global_assignment -name VERILOG_FILE rtl/n64rgb2_viletim_igr_top.v
+
+set_global_assignment -name VERILOG_FILE rtl/n64rgb_hk.v
 set_global_assignment -name VERILOG_FILE rtl/n64_vinfo_ext.v
-set_global_assignment -name VERILOG_FILE rtl/n64_deblur.v
 set_global_assignment -name VERILOG_FILE rtl/n64_vdemux.v
+
 set_global_assignment -name SDC_FILE sdc/n64rgb2_viletim_igr.sdc
+
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files/viletim_v2
 
 

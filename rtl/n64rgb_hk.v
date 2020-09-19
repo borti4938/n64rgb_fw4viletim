@@ -22,52 +22,34 @@
 // Company: Circuit-Board.de
 // Engineer: borti4938
 //
-// Module Name:    n64_igr
+// Module Name:    n64rgb_ctrl
 // Project Name:   N64 RGB DAC Mod
 // Target Devices: several MaxII & MaxV devices
 // Tool versions:  Altera Quartus Prime
 // Description:
-//
-// Dependencies: vh/igr_params.vh
-//
-// Revision: 2.7
-// Features: console reset
-//           override heuristic for deblur (resets on each reset and power cycle)
-//           activate / deactivate de-blur in 240p (a change overrides heuristic for de-blur)
-//           activate / deactivate 15bit mode
-//           selectable defaults
-//           defaults set on each power cycle and on each reset
-//           third party pad support
+//   housekeeping for N64RGB mods
 //
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module n64_igr (
+module n64rgb_hk (
   input      VCLK,
-  input      nRST_IGR,
+  input      nRST,
   output reg DRV_RST,
 
-  input CTRL,
+  input CTRL_i,
 
-  input Default_nForceDeBlur,
-  input Default_DeBlur,
-  input Default_n15bit_mode,
+  input n64_480i,
+  input n15bit_mode_t,
+  input VIDeBlur_t,
+  input en_IGR_Rst_Func,
+  input en_IGR_DeBl_15b_Func,
 
-  output reg nDeBlur,
-  output reg nForceDeBlur,
-  output reg n15bit_mode
-
-`ifdef OPTION_INVLPF
-  ,
-  output reg InvLPF
-`endif
+  output reg n15bit_o,
+  output reg nDeBlur_o
 );
 
 `include "vh/igr_params.vh"
-
-`ifdef OPTION_INVLPF
-  initial InvLPF = 1'b0;
-`endif
 
 
 // VCLK frequency (NTSC and PAL related to console type; not to video type)
@@ -106,10 +88,8 @@ wire      ctrl_bit     = ctrl_low_cnt < wait_cnt;
 reg [15:0] serial_data = 16'h0;
 reg  [3:0] data_cnt    =  4'h0;
 
-`ifdef OPTION_INVLPF
-  reg [ 1:0] remember_data    =  2'h0;
-  reg [15:0] prev_serial_data = 16'h0;
-`endif
+reg [1:0] n15bit_mode_hist = 2'b11;
+reg [1:0] VIDeBlur_hist = 2'b11;
 
 reg initiate_nrst = 1'b0;
 
@@ -155,39 +135,15 @@ always @(posedge CLK_4M) begin
           serial_data <= {ctrl_bit,serial_data[15:1]};
         end else begin        // sixteen bits read (analog values of stick not point of interest)
           rd_state <= ST_WAIT4N64;
-          case ({ctrl_bit,serial_data[15:1]})
-            `IGR_DEBLUR_OFF: begin
-              nForceDeBlur <= 1'b0;
-              nDeBlur      <= 1'b1;
-            end
-            `IGR_DEBLUR_ON: begin
-              nForceDeBlur <= 1'b0;
-              nDeBlur      <= 1'b0;
-            end
-            `IGR_15BITMODE_OFF: begin
-              n15bit_mode <= 1'b1;
-            end
-            `IGR_15BITMODE_ON: begin
-              n15bit_mode <= 1'b0;
-            end
-`ifdef OPTION_INVLPF
-            `IGR_TOGGLE_LPF: begin
-              if (prev_serial_data != serial_data)   // prevents multiple executions (together with remember data)
-                InvLPF <= ~InvLPF;
-                remember_data <= 2'h3;
-            end
-`endif
-            `IGR_RESET: begin
+          if (en_IGR_DeBl_15b_Func)
+            case ({ctrl_bit,serial_data[15:1]})
+              `IGR_15BITMODE_OFF: n15bit_o <= 1'b1;
+              `IGR_15BITMODE_ON: n15bit_o <= 1'b0;
+              `IGR_DEBLUR_OFF: nDeBlur_o <= 1'b1;
+              `IGR_DEBLUR_ON: nDeBlur_o <= 1'b0;
+            endcase
+          if (en_IGR_Rst_Func & ({ctrl_bit,serial_data[15:1]} == `IGR_RESET))
               initiate_nrst <= 1'b1;
-            end
-          endcase
-
-`ifdef OPTION_INVLPF
-          if (~|remember_data)
-            prev_serial_data <= serial_data;
-          else
-            remember_data <= remember_data - 1'b1;
-`endif
         end
       end
     end
@@ -205,15 +161,17 @@ always @(posedge CLK_4M) begin
       rd_state <= ST_WAIT4N64;
   end
 
-  ctrl_hist <= {ctrl_hist[1:0],CTRL};
+  if (^n15bit_mode_hist)
+    n15bit_o  <=  n15bit_mode_t;
+  
+  if (^VIDeBlur_hist)
+    nDeBlur_o <=  ~VIDeBlur_t;
 
-  if (!nRST_IGR) begin
-`ifdef OPTION_INVLPF
-    InvLPF      <= 1'b0;
-`endif
+  ctrl_hist <= {ctrl_hist[1:0],CTRL_i};
+  n15bit_mode_hist <= {n15bit_mode_hist[0],n15bit_mode_t};
+  VIDeBlur_hist <= {VIDeBlur_hist[0],VIDeBlur_t};
 
-    nForceDeBlur <= Default_nForceDeBlur;
-
+  if (!nRST) begin
     rd_state      <= ST_WAIT4N64;
     wait_cnt      <= 6'h0;
     ctrl_hist     <= 3'h7;
@@ -221,10 +179,11 @@ always @(posedge CLK_4M) begin
   end
 
   if (!nfirstboot) begin
-    nfirstboot   <=  1'b1;
-    nForceDeBlur <=  Default_nForceDeBlur;
-    nDeBlur      <= ~Default_DeBlur;
-    n15bit_mode  <=  Default_n15bit_mode;
+    nfirstboot <= 1'b1;
+    nDeBlur_o <= ~VIDeBlur_t;
+    n15bit_o <=  n15bit_mode_t;
+    n15bit_mode_hist <= {2{n15bit_mode_t}};
+    VIDeBlur_hist <= {2{VIDeBlur_t}};
   end
 end
 

@@ -53,7 +53,7 @@ input nDSYNC;
 input  [3:0] Sync_pre;
 input  [3:0] Sync_cur;
 
-output [3:0] vinfo_o;   // order: data_cnt,n64_480i
+output [3:0] vinfo_o;   // order: data_cnt,vmode,n64_480i
 
 
 // some pre-assignments

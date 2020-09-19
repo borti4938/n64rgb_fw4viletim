@@ -27,17 +27,21 @@
 // Project Name:   N64 RGB DAC Mod
 // Target Devices: MaxII: EPM240T100C5
 // Tool versions:  Altera Quartus Prime
+//
 // Description:
 //
-// Dependencies: rtl/n64_vinfo_ext.v  (Rev. 1.0)
-//               rtl/n64_deblur.v     (Rev. 1.1)
-//               rtl/n64_vdemux.v     (Rev. 1.0)
-//               vh/n64rgb_params.vh
+// short description of N64s RGB and sync data demux
+// -------------------------------------------------
 //
-// Revision: 1.5
-// Features: BUFFERED version (no color shifting around edges)
-//           de-blur with heuristic estimation (auto)
-//           15bit color mode (5bit for each color) if wanted
+// pulse shapes and their realtion to each other:
+// VCLK (~50MHz, Numbers representing posedge count)
+// ---. 3 .---. 0 .---. 1 .---. 2 .---. 3 .---
+//    |___|   |___|   |___|   |___|   |___|
+// nDSYNC (~12.5MHz)                           .....
+// -------.       .-------------------.
+//        |_______|                   |_______
+//
+// more info: http://members.optusnet.com.au/eviltim/n64rgb/n64rgb.html
 //
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -47,9 +51,8 @@ module n64rgb2_viletim_sw_top (
   nDSYNC,
   D_i,
 
-  nAutoDeBlur,
-  nForceDeBlur,  // feature to enable de-blur (0 = feature on, 1 = feature off)
-  n15bit_mode,      // 15bit color mode if input set to GND (weak pull-up assigned)
+  nAutoPad,    // used for VI-DeBlur off (open) and on (shorted to GND)
+  nManualPad,  // used for 15bit mode off (open) and on (shorted to GND)
 
   // Video output
   nHSYNC,
@@ -68,9 +71,8 @@ input                   VCLK;
 input                   nDSYNC;
 input [color_width-1:0] D_i;
 
-input nAutoDeBlur;
-input nForceDeBlur;
-input n15bit_mode;
+input nAutoPad;
+input nManualPad;
 
 output nHSYNC;
 output nVSYNC;
@@ -84,39 +86,15 @@ output [color_width-1:0] B_o;
 
 // start of rtl
 
-// Part 1: connect switches
-// ========================
-
-reg nForceDeBlur_L, nDeBlurMan_L, nrst_deblur_L;
-
-always @(*) begin
-  nForceDeBlur_L <= !nAutoDeBlur & nForceDeBlur;
-  nDeBlurMan_L   <= nForceDeBlur;
-  nrst_deblur_L  <= !nAutoDeBlur;
-end
-
-
-// Part 2 - 4: RGB Demux with De-Blur Add-On
-// =========================================
-//
-// short description of N64s RGB and sync data demux
-// -------------------------------------------------
-//
-// pulse shapes and their realtion to each other:
-// VCLK (~50MHz, Numbers representing negedge count)
-// ---. 3 .---. 0 .---. 1 .---. 2 .---. 3 .---
-//    |___|   |___|   |___|   |___|   |___|
-// nDSYNC (~12.5MHz)                           .....
-// -------.       .-------------------.
-//        |_______|                   |_______
-//
-// more info: http://members.optusnet.com.au/eviltim/n64rgb/n64rgb.html
-//
-
-// Part 2: get all of the vinfo needed for further processing
-// ==========================================================
-
+wire n15bit_mode, nDeBlur;
 wire [3:0] vinfo_pass;
+wire [`VDATA_FU_SLICE] vdata_r;
+
+assign n15bit_mode = nManualPad;
+assign nDeBlur = nAutoPad;
+
+// acquire vinfo
+// =============
 
 n64_vinfo_ext get_vinfo(
   .VCLK(VCLK),
@@ -127,32 +105,14 @@ n64_vinfo_ext get_vinfo(
 );
 
 
-// Part 3: DeBlur Management (incl. heuristic)
-// ===========================================
-
-wire ndo_deblur;
-
-n64_deblur deblur_management(
-  .VCLK(VCLK),
-  .nDSYNC(nDSYNC),
-  .nRST(nrst_deblur_L),
-  .vdata_pre(vdata_r),
-  .D_i(D_i),
-  .deblurparams_i({vinfo_pass,nForceDeBlur_L,nDeBlurMan_L}),
-  .ndo_deblur(ndo_deblur)
-);
-
-
-// Part 4: data demux
-// ==================
-
-wire [`VDATA_FU_SLICE] vdata_r;
+// video data demux
+// ================
 
 n64_vdemux video_demux(
   .VCLK(VCLK),
   .nDSYNC(nDSYNC),
   .D_i(D_i),
-  .demuxparams_i({vinfo_pass[3:1],ndo_deblur,n15bit_mode}),
+  .demuxparams_i({vinfo_pass[3:1],nDeBlur,n15bit_mode}),
   .vdata_r_0(vdata_r),
   .vdata_r_1({nVSYNC,nCLAMP,nHSYNC,nCSYNC,R_o,G_o,B_o})
 );
