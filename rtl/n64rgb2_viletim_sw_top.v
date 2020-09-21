@@ -45,6 +45,8 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
+//`define v1
+
 module n64rgb2_viletim_sw_top (
   // N64 Video Input
   VCLK,
@@ -53,6 +55,9 @@ module n64rgb2_viletim_sw_top (
 
   nAutoPad,    // used for VI-DeBlur off (open) and on (shorted to GND)
   nManualPad,  // used for 15bit mode off (open) and on (shorted to GND)
+  `ifdef v1
+    nManualPad_p1,  // pin 1 dublicate of this pad
+  `endif
 
   // Video output
   nHSYNC,
@@ -73,6 +78,9 @@ input [color_width-1:0] D_i;
 
 input nAutoPad;
 input nManualPad;
+`ifdef v1
+  input nManualPad_p1;
+`endif
 
 output nHSYNC;
 output nVSYNC;
@@ -90,7 +98,11 @@ wire n15bit_mode, nDeBlur;
 wire [3:0] vinfo_pass;
 wire [`VDATA_FU_SLICE] vdata_r;
 
-assign n15bit_mode = nManualPad;
+`ifndef v1
+  assign n15bit_mode = nManualPad;
+`else
+  assign n15bit_mode = nManualPad & nManualPad_p1;
+`endif
 assign nDeBlur = nAutoPad;
 
 // acquire vinfo

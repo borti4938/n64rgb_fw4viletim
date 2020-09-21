@@ -46,6 +46,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
+//`define v1
 
 module n64rgb2_viletim_igr_top (
   // N64 Video Input
@@ -56,6 +57,9 @@ module n64rgb2_viletim_igr_top (
   // Controller and Reset
   CTRL_A,
   nRST_M,
+  `ifdef v1
+    nRST_M_p1,
+  `endif
 
   // Jumper
   n15bit_mode_t,
@@ -82,6 +86,9 @@ input [color_width-1:0] D_i;
 
 input CTRL_A;
 inout nRST_M;
+`ifdef v1
+  inout nRST_M_p1;
+`endif
 
 input n15bit_mode_t;
 input nVIDeBlur_t;
@@ -104,9 +111,14 @@ wire nRST_int;
 wire [3:0] vinfo_pass;
 wire [`VDATA_FU_SLICE] vdata_r;
 
+`ifdef v1
+assign nRST_int = nRST_M & nRST_M_p1;
+assign nRST_M = DRV_RST ? 1'b0 : 1'bz;
+assign nRST_M_p1 = DRV_RST ? 1'b0 : 1'bz;
+`else
 assign nRST_int = nRST_M;
-assign nRST_M  = DRV_RST ? 1'b0 : 1'bz;
-
+assign nRST_M = DRV_RST ? 1'b0 : 1'bz;
+`endif
 
 // housekeeping
 // ============
