@@ -59,8 +59,8 @@ module n64rgb2_viletim_igr_top (
 
   // Jumper
   n15bit_mode_t,
-  VIDeBlur_t,
-  en_IGR_FuncS,
+  nVIDeBlur_t,
+  en_IGR_Funcs,
 
   // Video output
   nHSYNC,
@@ -84,8 +84,8 @@ input CTRL_A;
 inout nRST_M;
 
 input n15bit_mode_t;
-input VIDeBlur_t;
-input en_IGR_FuncS;
+input nVIDeBlur_t;
+input en_IGR_Funcs;
 
 output nHSYNC;
 output nVSYNC;
@@ -118,9 +118,9 @@ n64rgb_hk hk_u(
   .CTRL_i(CTRL_A),
   .n64_480i(vinfo_pass[0]),
   .n15bit_mode_t(n15bit_mode_t),
-  .VIDeBlur_t(VIDeBlur_t),
-  .en_IGR_Rst_Func(en_IGR_FuncS),
-  .en_IGR_DeBl_15b_Func(en_IGR_FuncS),
+  .nVIDeBlur_t(nVIDeBlur_t),
+  .en_IGR_Rst_Func(en_IGR_Funcs),
+  .en_IGR_DeBl_15b_Func(en_IGR_Funcs),
   .n15bit_o(n15bit_mode_o),
   .nDeBlur_o(nDeBlur_o)
 );
