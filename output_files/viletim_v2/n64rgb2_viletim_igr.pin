@@ -123,7 +123,7 @@ G_o[1]                       : 57        : output : 2.5 V             :         
 G_o[0]                       : 58        : output : 2.5 V             :         : 2         : Y              
 VCCIO2                       : 59        : power  :                   : 2.5V    : 2         :                
 GNDIO                        : 60        : gnd    :                   :         :           :                
-VIDeBlur_t                   : 61        : input  : 3.3-V LVTTL       :         : 2         : Y              
+nVIDeBlur_t                  : 61        : input  : 3.3-V LVTTL       :         : 2         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : 62        :        :                   :         : 2         :                
 VCCINT                       : 63        : power  :                   : 2.5V/3.3V :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 64        :        :                   :         : 2         :                
@@ -140,7 +140,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : 74        :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : 75        :        :                   :         : 2         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 76        :        :                   :         : 2         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 77        :        :                   :         : 2         :                
-en_IGR_FuncS                 : 78        : input  : 3.3-V LVTTL       :         : 2         : Y              
+en_IGR_Funcs                 : 78        : input  : 3.3-V LVTTL       :         : 2         : Y              
 GNDIO                        : 79        : gnd    :                   :         :           :                
 VCCIO2                       : 80        : power  :                   : 2.5V    : 2         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 81        :        :                   :         : 2         :                
