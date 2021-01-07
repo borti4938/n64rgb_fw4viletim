@@ -24,7 +24,7 @@
  ---------------------------------------------------------------------------------
  -- NC            : No Connect. This pin has no internal connection to the device.
  -- DNU           : Do Not Use. This pin MUST NOT be connected.
- -- VCCINT        : Dedicated power pin, which MUST be connected to VCC  (1.8V).
+ -- VCCINT        : Dedicated power pin, which MUST be connected to VCC  (2.5V/3.3V).
  -- VCCIO         : Dedicated power pin, which MUST be connected to VCC
  --                 of its bank.
  --                  Bank 1:       3.3V

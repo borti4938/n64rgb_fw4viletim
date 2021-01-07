@@ -24,7 +24,7 @@
  ---------------------------------------------------------------------------------
  -- NC            : No Connect. This pin has no internal connection to the device.
  -- DNU           : Do Not Use. This pin MUST NOT be connected.
- -- VCCINT        : Dedicated power pin, which MUST be connected to VCC  (1.8V).
+ -- VCCINT        : Dedicated power pin, which MUST be connected to VCC  (2.5V/3.3V).
  -- VCCIO         : Dedicated power pin, which MUST be connected to VCC
  --                 of its bank.
  --                  Bank 1:       3.3V
@@ -98,7 +98,7 @@ GNDIO                        : 32        : gnd    :                   :         
 G_o[5]                       : 33        : output : 3.3-V LVCMOS      :         : 1         : Y              
 G_o[6]                       : 34        : output : 3.3-V LVCMOS      :         : 1         : Y              
 RESERVED_INPUT_WITH_BUS_HOLD : 35        :        :                   :         : 1         :                
-n15bit_mode_t                : 36        : input  : 3.3-V LVCMOS      :         : 1         : Y              
+n16bit_mode_t                : 36        : input  : 3.3-V LVCMOS      :         : 1         : Y              
 RESERVED_INPUT_WITH_BUS_HOLD : 37        :        :                   :         : 1         :                
 RESERVED_INPUT_WITH_BUS_HOLD : 38        :        :                   :         : 1         :                
 RESERVED_INPUT_WITH_BUS_HOLD : 39        :        :                   :         : 1         :                
