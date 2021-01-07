@@ -75,8 +75,8 @@
 `define IGR_DEBLUR_OFF    (`Z + `St + `R + `Cl)
 `define IGR_DEBLUR_ON     (`Z + `St + `R + `Cr)
 
-`define IGR_15BITMODE_OFF (`Z + `St + `R + `Cu)
-`define IGR_15BITMODE_ON  (`Z + `St + `R + `Cd)
+`define IGR_16BITMODE_OFF (`Z + `St + `R + `Cu)
+`define IGR_16BITMODE_ON  (`Z + `St + `R + `Cd)
 
 `define IGR_TOGGLE_LPF    (`Z + `St + `L + `Dl)
 

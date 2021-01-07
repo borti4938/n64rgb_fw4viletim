@@ -14,10 +14,10 @@ I uploaded two different firmware versions. These are the common features:
 - Detection of PAL and NTSC mode (no output of that information at the moment as it is only internally used)
 - Heuristic for de-blur function
 - De-Blur in 240p/288p (horizontal resolution decreased from 640 to 320 pixels)
-- 15bit color mode
+- 16bit color mode
 - Slow Slew Rate
 
-The two versions of the firmware now differs in the way how de-blur and 15bit color mode is accessed:
+The two versions of the firmware now differs in the way how de-blur and 16bit color mode is accessed:
 - With mechanical switches
 - with in-game routine (IGR)
 
@@ -26,7 +26,7 @@ The following shortly describes the main features of the firmware and how to use
 
 ### In-Game Routines (IGR)
 
-Three functionalities are implemented: toggle vi-deblur feature, toggle the 15bit mode and resetting the console.
+Three functionalities are implemented: toggle vi-deblur feature, toggle the 16bit mode and resetting the console.
 
 To use this firmware (and therefore the IGRs) pin 21 of the CPLD (pad *A*) has to be connected to the communication wire of controller 1. On the controller port this is the middle pin, which is connected to pin 16 of the PIF-NUS (PIFP-NUS) on most consoles. Check this before soldering a wire to the PIF-NUS.
 
@@ -38,7 +38,7 @@ The button combination are as follows:
 - (de)activate vi-deblur:
   - activate: Z + Start + R + C-ri
   - deactivate: Z + Start + R + C-le
-- (de)activate 15bit mode:
+- (de)activate 16bit mode:
   - activate: Z + Start + R + C-dw
   - deactivate: Z + Start + R + C-up
 - In order to deactivate the IGR module, ...
@@ -79,9 +79,9 @@ How to control the feature:
   * IGR can override this. However the pad setting becomes active again if you toggle the state.
 
 
-### 15bit Color Mode
+### 16bit Color Mode
 
-The 15bit color mode reduces the color depth from 21bit (7bit for each color) down to 15bits (5bit for each color). Some very few games just use the five MSBs of the color information and the two LSBs for some kind of gamma dither. The 15bit color mode simply sets the two LSBs to '0'.
+The 16bit color mode reduces the color depth from 21bit (7bit for each color) down to 16bits (5bit red, 6bit green and 5bit blue). Some very few games processes the color information in 16bit. The 16bit color mode simply sets LSBs to '0'.
 
 How to control the feature:
 - firmware with switches
@@ -91,14 +91,14 @@ How to control the feature:
     - version 1.2: pad *M* is connected to pin 99
 	- version 1.1 and 1.0: pad *M* is not present, use either pin 99 or pin 1
 - 'firmware with IGR':
-  * By shorting pin 33 of the MaxII CPLD to GND (pin 32 e.g.), 15bit mode becomes active.
+  * By shorting pin 33 of the MaxII CPLD to GND (pin 32 e.g.), 16bit mode becomes active.
   * By lefting pin 33 of the MaxII CPLD open, vi-deblur becomes inactive.
-  * Pin 33 state determines the default state of 15bit mode
+  * Pin 33 state determines the default state of 16bit mode
   * IGR can override this. However the pad setting becomes active again if you toggle the state.
 
 _Remark on older PCB versions_
 - v1.x: IGR firmware
-  * use pin 36 to toggle 15bit mode (GND is pin 37)
+  * use pin 36 to toggle 16bit mode (GND is pin 37)
 
 
 ## Final Remarks
