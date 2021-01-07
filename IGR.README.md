@@ -27,8 +27,8 @@ You have the following values for your assignment available: **\`A, \`B, \`Z, \`
 - _igr\_reset_: button combination to trigger a reset
 - _igr\_deblur\_off_: button combination to switch deblur off
 - _igr\_deblur\_on_: button combination to switch deblur on
-- _igr\_15bitmode\_off_: button combination to switch 15bit color mode off
-- _igr\_15bitmode\_on_: button combination to switch 15bit color mode on
+- _igr\_16bitmode\_off_: button combination to switch 16bit color mode off
+- _igr\_16bitmode\_on_: button combination to switch 16bit color mode on
 
 Once you have edited your button combinations, you have the option to either build the firmware on your own or to request a firmware build.
 

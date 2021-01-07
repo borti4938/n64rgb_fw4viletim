@@ -40,12 +40,12 @@ module n64rgb_hk (
   input CTRL_i,
 
   input n64_480i,
-  input n15bit_mode_t,
+  input n16bit_mode_t,
   input nVIDeBlur_t,
   input en_IGR_Rst_Func,
-  input en_IGR_DeBl_15b_Func,
+  input en_IGR_DeBl_16b_Func,
 
-  output reg n15bit_o,
+  output reg n16bit_o,
   output reg nDeBlur_o
 );
 
@@ -88,7 +88,7 @@ wire      ctrl_bit     = ctrl_low_cnt < wait_cnt;
 reg [15:0] serial_data = 16'h0;
 reg  [3:0] data_cnt    =  4'h0;
 
-reg [1:0] n15bit_mode_hist = 2'b11;
+reg [1:0] n16bit_mode_hist = 2'b11;
 reg [1:0] nVIDeBlur_hist = 2'b11;
 
 reg initiate_nrst = 1'b0;
@@ -135,10 +135,10 @@ always @(posedge CLK_4M) begin
           serial_data <= {ctrl_bit,serial_data[15:1]};
         end else begin        // sixteen bits read (analog values of stick not point of interest)
           rd_state <= ST_WAIT4N64;
-          if (en_IGR_DeBl_15b_Func)
+          if (en_IGR_DeBl_16b_Func)
             case ({ctrl_bit,serial_data[15:1]})
-              `IGR_15BITMODE_OFF: n15bit_o <= 1'b1;
-              `IGR_15BITMODE_ON: n15bit_o <= 1'b0;
+              `IGR_16BITMODE_OFF: n16bit_o <= 1'b1;
+              `IGR_16BITMODE_ON: n16bit_o <= 1'b0;
               `IGR_DEBLUR_OFF: nDeBlur_o <= 1'b1;
               `IGR_DEBLUR_ON: nDeBlur_o <= 1'b0;
             endcase
@@ -161,14 +161,14 @@ always @(posedge CLK_4M) begin
       rd_state <= ST_WAIT4N64;
   end
 
-  if (^n15bit_mode_hist)
-    n15bit_o  <= n15bit_mode_t;
+  if (^n16bit_mode_hist)
+    n16bit_o  <= n16bit_mode_t;
   
   if (^nVIDeBlur_hist)
     nDeBlur_o <= nVIDeBlur_t;
 
   ctrl_hist <= {ctrl_hist[1:0],CTRL_i};
-  n15bit_mode_hist <= {n15bit_mode_hist[0],n15bit_mode_t};
+  n16bit_mode_hist <= {n16bit_mode_hist[0],n16bit_mode_t};
   nVIDeBlur_hist <= {nVIDeBlur_hist[0],nVIDeBlur_t};
 
   if (!nRST) begin
@@ -181,8 +181,8 @@ always @(posedge CLK_4M) begin
   if (!nfirstboot) begin
     nfirstboot <= 1'b1;
     nDeBlur_o <= nVIDeBlur_t;
-    n15bit_o <=  n15bit_mode_t;
-    n15bit_mode_hist <= {2{n15bit_mode_t}};
+    n16bit_o <=  n16bit_mode_t;
+    n16bit_mode_hist <= {2{n16bit_mode_t}};
     nVIDeBlur_hist <= {2{nVIDeBlur_t}};
   end
 end

@@ -1,4 +1,4 @@
- -- Copyright (C) 2019  Intel Corporation. All rights reserved.
+ -- Copyright (C) 2020  Intel Corporation. All rights reserved.
  -- Your use of Intel Corporation's design tools, logic functions 
  -- and other software and tools, and any partner logic 
  -- functions, and any output files from any of the foregoing 
@@ -58,7 +58,7 @@
  -- Pin directions (input, output or bidir) are based on device operating in user mode.
  ---------------------------------------------------------------------------------
 
-Quartus Prime Version 18.1.1 Build 646 04/11/2019 SJ Lite Edition
+Quartus Prime Version 20.1.0 Build 711 06/05/2020 SJ Lite Edition
 CHIP  "n64rgb2_viletim_igr"  ASSIGNED TO AN: EPM240T100C5
 
 Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
@@ -95,7 +95,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : 29        :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : 30        :        :                   :         : 1         :                
 VCCIO1                       : 31        : power  :                   : 3.3V    : 1         :                
 GNDIO                        : 32        : gnd    :                   :         :           :                
-n15bit_mode_t                : 33        : input  : 3.3-V LVTTL       :         : 1         : Y              
+n16bit_mode_t                : 33        : input  : 3.3-V LVTTL       :         : 1         : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : 34        :        :                   :         : 1         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 35        :        :                   :         : 1         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : 36        :        :                   :         : 1         :                

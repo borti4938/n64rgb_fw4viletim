@@ -118,11 +118,11 @@ set_instance_assignment -name SLOW_SLEW_RATE ON -to nVSYNC
 
 ## Jumper
 ## ======
-set_location_assignment PIN_36 -to n15bit_mode_t
+set_location_assignment PIN_36 -to n16bit_mode_t
 set_location_assignment PIN_61 -to nVIDeBlur_t
 set_location_assignment PIN_91 -to en_IGR_Funcs
 
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to n15bit_mode_t
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to n16bit_mode_t
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to nVIDeBlur_t
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to en_IGR_Funcs
 

@@ -54,7 +54,7 @@ module n64rgb2_viletim_sw_top (
   D_i,
 
   nAutoPad,    // used for VI-DeBlur off (open) and on (shorted to GND)
-  nManualPad,  // used for 15bit mode off (open) and on (shorted to GND)
+  nManualPad,  // used for 16bit mode off (open) and on (shorted to GND)
   `ifdef v1
     nManualPad_p1,  // pin 1 dublicate of this pad
   `endif
@@ -94,14 +94,14 @@ output [color_width-1:0] B_o;
 
 // start of rtl
 
-wire n15bit_mode, nDeBlur;
+wire n16bit_mode, nDeBlur;
 wire [3:0] vinfo_pass;
 wire [`VDATA_FU_SLICE] vdata_r;
 
 `ifndef v1
-  assign n15bit_mode = nManualPad;
+  assign n16bit_mode = nManualPad;
 `else
-  assign n15bit_mode = nManualPad & nManualPad_p1;
+  assign n16bit_mode = nManualPad & nManualPad_p1;
 `endif
 assign nDeBlur = nAutoPad;
 
@@ -124,7 +124,7 @@ n64_vdemux video_demux(
   .VCLK(VCLK),
   .nDSYNC(nDSYNC),
   .D_i(D_i),
-  .demuxparams_i({vinfo_pass[3:1],nDeBlur,n15bit_mode}),
+  .demuxparams_i({vinfo_pass[3:1],nDeBlur,n16bit_mode}),
   .vdata_r_0(vdata_r),
   .vdata_r_1({nVSYNC,nCLAMP,nHSYNC,nCSYNC,R_o,G_o,B_o})
 );

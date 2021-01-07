@@ -62,7 +62,7 @@ module n64rgb2_viletim_igr_top (
   `endif
 
   // Jumper
-  n15bit_mode_t,
+  n16bit_mode_t,
   nVIDeBlur_t,
   en_IGR_Funcs,
 
@@ -90,7 +90,7 @@ inout nRST_M;
   inout nRST_M_p1;
 `endif
 
-input n15bit_mode_t;
+input n16bit_mode_t;
 input nVIDeBlur_t;
 input en_IGR_Funcs;
 
@@ -106,7 +106,7 @@ output [color_width-1:0] B_o;
 
 // start of rtl
 
-wire DRV_RST, n15bit_mode_o, nDeBlur_o;
+wire DRV_RST, n16bit_mode_o, nDeBlur_o;
 wire nRST_int;
 wire [3:0] vinfo_pass;
 wire [`VDATA_FU_SLICE] vdata_r;
@@ -129,11 +129,11 @@ n64rgb_hk hk_u(
   .DRV_RST(DRV_RST),
   .CTRL_i(CTRL_A),
   .n64_480i(vinfo_pass[0]),
-  .n15bit_mode_t(n15bit_mode_t),
+  .n16bit_mode_t(n16bit_mode_t),
   .nVIDeBlur_t(nVIDeBlur_t),
   .en_IGR_Rst_Func(en_IGR_Funcs),
-  .en_IGR_DeBl_15b_Func(en_IGR_Funcs),
-  .n15bit_o(n15bit_mode_o),
+  .en_IGR_DeBl_16b_Func(en_IGR_Funcs),
+  .n16bit_o(n16bit_mode_o),
   .nDeBlur_o(nDeBlur_o)
 );
 
@@ -157,7 +157,7 @@ n64_vdemux video_demux(
   .VCLK(VCLK),
   .nDSYNC(nDSYNC),
   .D_i(D_i),
-  .demuxparams_i({vinfo_pass[3:1],nDeBlur_o,n15bit_mode_o}),
+  .demuxparams_i({vinfo_pass[3:1],nDeBlur_o,n16bit_mode_o}),
   .vdata_r_0(vdata_r),
   .vdata_r_1({nVSYNC,nCLAMP,nHSYNC,nCSYNC,R_o,G_o,B_o})
 );
