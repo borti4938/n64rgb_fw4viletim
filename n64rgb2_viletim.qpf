@@ -28,5 +28,7 @@ DATE = "23:04:06  April 16, 2021"
 
 # Revisions
 
+PROJECT_REVISION = "n64rgb_viletim_igr"
+PROJECT_REVISION = "n64rgb_viletim_sw"
 PROJECT_REVISION = "n64rgb2_viletim_igr"
 PROJECT_REVISION = "n64rgb2_viletim_sw"
