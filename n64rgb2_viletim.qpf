@@ -18,15 +18,15 @@
 # -------------------------------------------------------------------------- #
 #
 # Quartus Prime
-# Version 20.1.0 Build 711 06/05/2020 SJ Lite Edition
-# Date created = 12:37:07  January 07, 2021
+# Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
+# Date created = 23:04:06  April 16, 2021
 #
 # -------------------------------------------------------------------------- #
 
 QUARTUS_VERSION = "20.1"
-DATE = "12:37:07  January 07, 2021"
+DATE = "23:04:06  April 16, 2021"
 
 # Revisions
 
-PROJECT_REVISION = "n64rgb2_viletim_sw"
 PROJECT_REVISION = "n64rgb2_viletim_igr"
+PROJECT_REVISION = "n64rgb2_viletim_sw"
