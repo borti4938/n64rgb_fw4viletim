@@ -77,12 +77,12 @@ localparam ST_WAIT4N64 = 2'b00; // wait for N64 sending request to controller
 localparam ST_N64_RD   = 2'b01; // N64 request sniffing
 localparam ST_CTRL_RD  = 2'b10; // controller response
 
-reg [5:0] wait_cnt     = 6'h0;  // counter for wait state (needs appr. 16us at CLK_4M clock to fill up from 0 to 63)
+reg [7:0] wait_cnt     = 8'h0;  // counter for wait state (needs appr. 64us at CLK_4M clock to fill up from 0 to 255 -> hopefully enough for slow reacting controller like the wireless brawler)
 reg [2:0] ctrl_hist    = 3'h7;
 wire      ctrl_negedge =  ctrl_hist[2] & !ctrl_hist[1];
 wire      ctrl_posedge = !ctrl_hist[2] &  ctrl_hist[1];
 
-reg [5:0] ctrl_low_cnt = 6'h0;
+reg [7:0] ctrl_low_cnt = 8'h0;
 wire      ctrl_bit     = ctrl_low_cnt < wait_cnt;
 
 reg [15:0] serial_data = 16'h0;
@@ -153,7 +153,7 @@ always @(posedge CLK_4M) begin
   endcase
 
   if (ctrl_negedge | ctrl_posedge) begin // counter reset
-    wait_cnt <= 6'h0;
+    wait_cnt <= 8'h0;
   end else begin
     if (~&wait_cnt) // saturate counter if needed
       wait_cnt <= wait_cnt + 1'b1;
@@ -173,7 +173,7 @@ always @(posedge CLK_4M) begin
 
   if (!nRST) begin
     rd_state      <= ST_WAIT4N64;
-    wait_cnt      <= 6'h0;
+    wait_cnt      <= 8'h0;
     ctrl_hist     <= 3'h7;
     initiate_nrst <= 1'b0;
   end
